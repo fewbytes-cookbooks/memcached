@@ -33,15 +33,15 @@ define :memcached_instance do
   end
 
   provide_service "memcached-#{params[:name]}" , service_info={
-      "memory" => node['memcached']['memory'],
-      "port" => node['memcached']['port'],
-      "user" => node['memcached']['user']}.merge(opts)
+      "memory" => params[:memory] || node['memcached']['memory'],
+      "port" => params[:port] || node['memcached']['port'],
+      "user" => params[:user] || node['memcached']['user']}
 
   if params[:name] == "default"
     provide_service "memcached" , service_info={
-      "memory" => node['memcached']['memory'],
-      "port" => node['memcached']['port'],
-      "user" => node['memcached']['user']}.merge(opts)
+      "memory" => params[:memory] || node['memcached']['memory'],
+      "port" => params[:port] || node['memcached']['port'],
+      "user" => params[:user] || node['memcached']['user']}
   end
 
 end
