@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: memcached
-# Attributes:: default
+# Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
 #
@@ -17,9 +17,22 @@
 # limitations under the License.
 #
 
-default['memcached']['memory'] = 64
-default['memcached']['port'] = 11211
-default['memcached']['user'] = "nobody"
-default['memcached']['listen'] = "0.0.0.0"
-default['memcached']['maxconn'] = 1024
-default['memcached']['install_initd'] = true
+# include epel on redhat/centos 5 and below in order to get the memcached packages
+if node['platform_family'] == "rhel" and node['platform_version'].to_i < 6
+ include_recipe "yum::epel"
+end
+
+package "memcached" do
+  action :install
+end
+
+package "libmemcache-dev" do
+  case node['platform_family']
+  when "rhel", "fedora"
+    package_name "libmemcached-devel"
+  else
+    package_name "libmemcache-dev"
+  end
+  action :install
+end
+

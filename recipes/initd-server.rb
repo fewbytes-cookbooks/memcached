@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "memcached::default"
+include_recipe "memcached::setup"
+
+# force the setting, since obviously this recipe was selected to run on purpose
+node.set['memcached']['install_initd'] = true
 
 service "memcached" do
   action :nothing

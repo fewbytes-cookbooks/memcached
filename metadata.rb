@@ -9,8 +9,9 @@ depends           "runit", "<= 0.16.2"
 depends           "yum"
 depends           "cluster_service_discovery"
 
-recipe "memcached", "Installs memcached"
+recipe "memcached", "Installs and configures a memcached; init or runit based on the attribute"
 recipe "memcached::initd-server", "Installs and configures a default memcached init.d service"
+recipe "memcached::setup", "Installs memcached"
 
 %w{ ubuntu debian redhat fedora centos scientific amazon }.each do |os|
   supports os
@@ -35,3 +36,8 @@ attribute "memcached/listen",
   :display_name => "Memcached IP Address",
   :description => "IP address to use for memcached instance",
   :default => "0.0.0.0"
+
+attribute "memcached/install_initd",
+  :display_name => "Run on init.d - true or false",
+  :description => "boolean to decide what type of daemon to run",
+  :default => "true"

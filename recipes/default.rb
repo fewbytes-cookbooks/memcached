@@ -17,22 +17,22 @@
 # limitations under the License.
 #
 
-# include epel on redhat/centos 5 and below in order to get the memcached packages
-if node['platform_family'] == "rhel" and node['platform_version'].to_i < 6
- include_recipe "yum::epel"
-end
+include_recipe "memcached::setup"
 
-package "memcached" do
-  action :install
-end
+if node['memcached']['install_initd']
+  include_recipe "memcached::initd-server"
+else
 
-package "libmemcache-dev" do
-  case node['platform_family']
-  when "rhel", "fedora"
-    package_name "libmemcached-devel"
-  else
-    package_name "libmemcache-dev"
+  # disable the default behavior of the package
+  service "memcached" do
+    action [:stop , :disable]
+    supports :status => true, :start => true, :stop => true, :restart => true
   end
-  action :install
+
+  memcached_instance "default" do
+    port "11211"
+    memory "64"
+  end
+
 end
 

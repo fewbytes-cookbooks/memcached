@@ -18,7 +18,7 @@
 #
 
 define :memcached_instance do
-  include_recipe "memcached"
+  include_recipe "memcached::setup"
 
   opts = params
 
