@@ -31,4 +31,17 @@ define :memcached_instance do
       :user => node['memcached']['user']}.merge(opts)
     )
   end
+
+  provide_service "memcached-#{params[:name]}" , service_info={
+      "memory" => node['memcached']['memory'],
+      "port" => node['memcached']['port'],
+      "user" => node['memcached']['user']}.merge(opts)
+
+  if params[:name] == "default"
+    provide_service "memcached" , service_info={
+      "memory" => node['memcached']['memory'],
+      "port" => node['memcached']['port'],
+      "user" => node['memcached']['user']}.merge(opts)
+  end
+
 end
