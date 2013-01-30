@@ -29,10 +29,7 @@ else
     supports :status => true, :start => true, :stop => true, :restart => true
   end
 
-  memcached_instance "default" do
-    port "11211"
-    memory "64"
-  end
+  memcached_instance "default"
 
 end
 
